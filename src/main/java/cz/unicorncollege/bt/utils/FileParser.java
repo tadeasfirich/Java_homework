@@ -273,7 +273,6 @@ public class FileParser {
 					if (room.getReservations().isEmpty()) {
 						hasNoReservations++;
 						//TODO: Dodelat vyjímku
-						break;
 					} else {
 						for (Reservation meetingReservation : room.getReservations()) {
 							Element reservation = doc.createElement("reservation");
