@@ -165,24 +165,29 @@ public class FileParser {
 		File xmlFile = new File(location);
 		if (csvFile.exists() && !csvFile.isDirectory()) {
 			myMeetingCentres = readData(location);
-			//TODO: docasne
-			if (!(xmlFile.exists() && !xmlFile.isDirectory())) {
+			if (xmlFile.exists() && !xmlFile.isDirectory()) {
 				loadReservationsFromXML(myMeetingCentres, locationXML);
+                System.out.println();
+                System.out.println("**************************************************");
+                System.out.println("Reservations data was loaded correctly.");
+                System.out.println("**************************************************");
 			} else {
 				System.out.println();
-				System.out.println("There are no reservations to load.");
+                System.out.println("**************************************************");
+                System.out.println("The is no Reservation's Data");
+                System.out.println("**************************************************");
 			}
 			System.out.println();
 
 			System.out.println("**************************************************");
-			System.out.println("Data was loaded correctly.");
+			System.out.println("Meeting centres data was loaded correctly.");
 			System.out.println("**************************************************");
 
 			System.out.println();
 
 		} else {
 			System.out.println("**************************************************");
-			System.out.println("The is no Data");
+			System.out.println("The is no Meeting centres Data");
 			System.out.println("PLEASE IMPORT THE DATA.");
 			System.out.println("**************************************************");
 		}
@@ -198,11 +203,7 @@ public class FileParser {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-
 			NodeList nList = doc.getElementsByTagName("reservation");
-
-			System.out.println("----------------------------");
 
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
