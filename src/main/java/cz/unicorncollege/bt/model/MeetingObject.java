@@ -1,8 +1,8 @@
 package cz.unicorncollege.bt.model;
 
-public abstract class MeetingObject {	
-	protected String name;	
-	protected String code;	
+public abstract class MeetingObject {
+	protected String name;
+	protected String code;
 	protected String description;
 
 	public String getName() {

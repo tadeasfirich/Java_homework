@@ -1,13 +1,14 @@
 package cz.unicorncollege.bt.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MeetingRoom extends MeetingObject {
-	private int capacity;	
-	private boolean hasVideoConference;	
+	private int capacity;
+	private boolean hasVideoConference;
 	private MeetingCentre meetingCentre;
-	private List<Reservation> reservations;
+	private List<Reservation> reservations = new ArrayList<Reservation>();
 
 	public int getCapacity() {
 		return capacity;
@@ -36,13 +37,16 @@ public class MeetingRoom extends MeetingObject {
 	public List<Reservation> getReservations() {
 		return reservations;
 	}
-	
+
 	public List<Reservation> getSortedReservationsByDate(Date getSortedReservationsByDate) {
 		//TODO get reservations by date and return sorted reservations by hours
 		return null;
 	}
 
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}	
+	public void addReservation (Reservation reservation) {
+		this.reservations.add(reservation);
+	}
+	public void removeReservation (Reservation reservation) {
+		this.reservations.remove(reservation);
+	}
 }

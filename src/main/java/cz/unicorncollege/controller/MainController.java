@@ -2,7 +2,6 @@ package cz.unicorncollege.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import cz.unicorncollege.bt.utils.Choices;
 import cz.unicorncollege.bt.utils.FileParser;
 
@@ -15,19 +14,20 @@ import cz.unicorncollege.bt.utils.FileParser;
 public class MainController {
 	private MeetingController controll;
 	private ReservationController controllReservation;
-	
+	//TODO: Neošetřený prázdný vstup z menu. Chybí komentáře v kódu.
+
 	/**
 	 * Constructor of main class.
 	 */
 	public MainController() {
 		controll = new MeetingController();
 		controll.init();
-		
+
 		controllReservation = new ReservationController(controll);
 	}
 
-	
-    /**
+
+	/**
 	 * Main method, which runs the whole application.
 	 *
 	 * @param argv String[]
@@ -49,30 +49,35 @@ public class MainController {
 		choices.add("Export Data");
 		choices.add("Exit and Save");
 		choices.add("Exit");
-
+		System.out.println();
+		System.out.println("-------------------------------------");
 		while (true) {
 			switch (Choices.getChoice("Select an option: ", choices)) {
-			case 1:
-				controll.listAllMeetingCentres();
-				break;
-			case 2:
-				controll.addMeeMeetingCentre();
-				break;
-			case 3:
-				controllReservation.showReservationMenu();
-				break;
-			case 4:
-				controll.setMeetingCentres(FileParser.importData());
-				controll.listAllMeetingCentres();
-				break;
-			case 5:
-				FileParser.exportDataToJSON(controllReservation);
-				break;
-			case 6:
-				FileParser.saveData(controll);
-				return;
-			case 7:
-				return;
+				case 1:
+					controll.listAllMeetingCentres();
+					break;
+				case 2:
+					controll.addMeeMeetingCentre();
+					break;
+				case 3:
+					controllReservation.showReservationMenu();
+					break;
+				case 4:
+					controll.setMeetingCentres(FileParser.importData());
+					controll.listAllMeetingCentres();
+					break;
+				case 5:
+					try {
+						FileParser.saveDataToXML(controll.getMeetingCentres());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					break;
+				case 6:
+					FileParser.saveData(controll.toSaveString());
+					System.exit(0);
+				case 7:
+					System.exit(0);
 			}
 		}
 	}
