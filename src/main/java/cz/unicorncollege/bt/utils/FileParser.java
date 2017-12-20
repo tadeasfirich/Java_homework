@@ -23,6 +23,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import static java.lang.String.*;
 
 public class FileParser {
@@ -346,6 +352,26 @@ public class FileParser {
 //		}
 
 		System.out.println();
+	}
+
+	public static void exportToJSON(List<MeetingCentre> centres) throws IOException {
+
+		JSONObject obj = new JSONObject();
+		obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
+		obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
+
+		JSONArray data = new JSONArray();
+		data.add("Compnay: eBay");
+		data.add("Compnay: Paypal");
+		data.add("Compnay: Google");
+		obj.put("data", data);
+
+		// try-with-resources statement based on post comment below :)
+		try (FileWriter file = new FileWriter("file1.txt")) {
+			file.write(obj.toJSONString());
+			System.out.println("Successfully Copied JSON Object to File...");
+			System.out.println("\nJSON Object: " + obj);
+		}
 	}
 }
 

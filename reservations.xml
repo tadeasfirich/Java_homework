@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <reservatons>
     <reservation>
+        <room>EBC-C7-MR:1_1</room>
+        <date>2017-01-02</date>
+        <timeFrom>10:00</timeFrom>
+        <timeTo>16:00</timeTo>
+        <expectedPersonCount>8</expectedPersonCount>
+        <costumer>Viktor Skrobach</costumer>
+        <note/>
+    </reservation>
+    <reservation>
         <room>EBC-PAR-MR:1_2</room>
         <date>2017-01-02</date>
         <timeFrom>13:00</timeFrom>

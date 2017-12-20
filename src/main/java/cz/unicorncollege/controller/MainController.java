@@ -1,5 +1,6 @@
 package cz.unicorncollege.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import cz.unicorncollege.bt.utils.Choices;
@@ -68,13 +69,18 @@ public class MainController {
 					break;
 				case 5:
 					try {
-						FileParser.saveDataToXML(controll.getMeetingCentres());
-					} catch (Exception e) {
+						FileParser.exportToJSON(controll.getMeetingCentres());
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					break;
 				case 6:
 					FileParser.saveData(controll.toSaveString());
+					try {
+						FileParser.saveDataToXML(controll.getMeetingCentres());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					System.exit(0);
 				case 7:
 					System.exit(0);
