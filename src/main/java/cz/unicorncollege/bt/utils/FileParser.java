@@ -355,6 +355,7 @@ public class FileParser {
 	}
 
 	public static void exportToJSON(List<MeetingCentre> centres) throws IOException {
+		//TODO: Dodělat JSON
 
 		JSONObject obj = new JSONObject();
 		obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");

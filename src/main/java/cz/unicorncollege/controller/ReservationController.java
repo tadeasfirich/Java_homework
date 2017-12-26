@@ -288,6 +288,37 @@ public class ReservationController {
 		System.out.println("The reservation was successful created");
 	}
 
+	private boolean checkTime (String string, Reservation thisReservation) {
+		Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+		Matcher matcher = pattern.matcher(string);
+		boolean sameDate = false;
+		for (Reservation reservation : actualMeetingRoom.getReservations()) {
+			if (thisReservation.getDate().equals(reservation.getDate())) {
+				sameDate = true;
+			}
+		}
+		if (matcher.matches()) {
+			if (sameDate) {
+				for (Reservation reservation : actualMeetingRoom.getReservations()) {
+					if (reservation.getTimeFrom().equals(string)) {
+
+					}
+				}
+			}
+			return true;
+		} else {
+			System.out.println("The Date in not valid. Try it again");
+			return false;
+		}
+	}
+
+	private float timeToFloat (String time) {
+		//TODO: DOdělat validaci time
+		if (time.length() == 4) {
+		}
+		return 0;
+	}
+
 	private void deleteReservation(MeetingRoom room) {
 		// TODO list all reservations as choices and let enter item for
 		// deletion, delete it and inform about successful deletion
