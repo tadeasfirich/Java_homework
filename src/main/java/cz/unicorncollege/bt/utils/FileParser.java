@@ -371,9 +371,10 @@ public class FileParser {
         JSONArray data = new JSONArray();
 
         for (MeetingCentre centre : centres) {
+            JSONObject meetingCentre = new JSONObject();
             for (MeetingRoom room : centre.getMeetingRooms()) {
-                data.add("meetingCentre: " + centre.getCode());
-                data.add("meetingRoom: " + room.getCode());
+                meetingCentre.put("meetingCentre", centre.getCode());
+                meetingCentre.put("meetingRoom", room.getCode());
                 JSONObject reservations = new JSONObject();
                 for (Reservation reservation : room.getReservations()) {
                     JSONArray date = new JSONArray();
@@ -385,10 +386,10 @@ public class FileParser {
                     date.add("note: " + reservation.getNote());
                     reservations.put(reservation.getDate(), date);
                 }
-                obj.put("reservations", reservations);
+                meetingCentre.put("reservations", reservations);
             }
+            data.add(meetingCentre);
         }
-
 		obj.put("data", data);
 
 		// try-with-resources statement based on post comment below :)
