@@ -1,6 +1,7 @@
 package cz.unicorncollege.bt.utils;
 
 import com.opencsv.CSVReader;
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import cz.unicorncollege.bt.model.MeetingCentre;
 import cz.unicorncollege.bt.model.MeetingRoom;
 import cz.unicorncollege.bt.model.Reservation;
@@ -18,10 +19,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -357,14 +355,40 @@ public class FileParser {
 	public static void exportToJSON(List<MeetingCentre> centres) throws IOException {
 		//TODO: Dodělat JSON
 
-		JSONObject obj = new JSONObject();
-		obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
-		obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
+		//TODO: Dodelat iteraci
+//        List<MeetingCentre> orderedCentres = null;
+//        for (MeetingCentre centre : centres) {
+//            System.out.println(centre.getCode());
+//            if (orderedCentres.isEmpty()) {
+//                orderedCentres.add(centre);
+//            }
+//
+//        }
 
-		JSONArray data = new JSONArray();
-		data.add("Compnay: eBay");
-		data.add("Compnay: Paypal");
-		data.add("Compnay: Google");
+        JSONObject obj = new JSONObject();
+        obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
+        obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
+        JSONArray data = new JSONArray();
+
+        for (MeetingCentre centre : centres) {
+            for (MeetingRoom room : centre.getMeetingRooms()) {
+                data.add("meetingCentre: " + centre.getCode());
+                data.add("meetingRoom: " + room.getCode());
+                JSONObject reservations = new JSONObject();
+                for (Reservation reservation : room.getReservations()) {
+                    JSONArray date = new JSONArray();
+                    date.add("from: " + reservation.getTimeFrom());
+                    date.add("to: " + reservation.getTimeTo());
+                    date.add("expectedPersonsCount: " + reservation.getExpectedPersonCount());
+                    date.add("customer: " + reservation.getCustomer());
+                    date.add("videoConference: " + reservation.isNeedVideoConference());
+                    date.add("note: " + reservation.getNote());
+                    reservations.put(reservation.getDate(), date);
+                }
+                obj.put("reservations", reservations);
+            }
+        }
+
 		obj.put("data", data);
 
 		// try-with-resources statement based on post comment below :)
