@@ -384,7 +384,7 @@ public class FileParser {
                     date.add("customer: " + reservation.getCustomer());
                     date.add("videoConference: " + reservation.isNeedVideoConference());
                     date.add("note: " + reservation.getNote());
-                    reservations.put(reservation.getDate(), date);
+                    reservations.put(reservation.getDottedDate(), date);
                 }
                 meetingCentre.put("reservations", reservations);
             }

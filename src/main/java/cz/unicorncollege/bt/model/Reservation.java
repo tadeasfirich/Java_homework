@@ -30,6 +30,11 @@ public class Reservation {
 		return sdf.format(date);
 	}
 
+	public String getDottedDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("DD.MM.YYYY");
+		return sdf.format(date);
+	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
