@@ -183,18 +183,16 @@ public class ReservationController {
 
 	private void addNewReservation(MeetingRoom actualMeetingRoom) {
 		// TODO enter data one by one, add new reservation object to the actual
-		// room, than inform about successful adding
 		Reservation reservation = new Reservation();
 
 		reservation.setMeetingRoom(actualMeetingRoom);
 		while (true) {
-			String string = Choices.getInput("Enter Date in format: DD.MM.YYYY : " );
+			String string = Choices.getInput("Enter Date in format: dd.MM.yyyy : " );
 			Pattern pattern = Pattern.compile("^([1-9]|[12]\\d|3[01]){1}.(0?[1-9]|1[012]){1}.\\d{4}$");
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.matches()) {
 				DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 				Date date = null;
-				//TODO: Předělat převodník nefunguje správně
 				try {
 					date = format.parse(string);
 				} catch (ParseException e) {
@@ -207,31 +205,37 @@ public class ReservationController {
 			}
 		}
 		while (true) {
-			String string = Choices.getInput("Enter Time FROM in format: HH:MM : " );
-			Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
-			Matcher matcher = pattern.matcher(string);
-			if (matcher.matches()) {
-
-				reservation.setTimeFrom(string);
-				break;
-			} else {
-				System.out.println("The Date in not valid. Try it again");
+			String timeFrom;
+			String timeTo;
+			while (true) {
+				timeFrom = Choices.getInput("Enter Time FROM in format: HH:MM : " );
+				Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+				Matcher matcher = pattern.matcher(timeFrom);
+				if (matcher.matches()) {
+					break;
+				} else {
+					System.out.println("The Date in not valid. Try it again");
+				}
 			}
+			while (true) {
+				timeTo = Choices.getInput("Enter Time TO in format: HH:MM : " );
+				Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+				Matcher matcher = pattern.matcher(timeTo);
+				if (matcher.matches()) {
+					break;
+				} else {
+					System.out.println("The Date in not valid. Try it again");
+				}
+			}
+			if (reservation.validateTime(timeFrom, timeTo, actualMeetingRoom, reservation.getDate())) {
+				reservation.setTimeFrom(timeFrom);
+				reservation.setTimeTo(timeTo);
+				break;
+			}
+			System.out.println("There is a colision. Try it againg!");
+
 		}
 		while (true) {
-			String string = Choices.getInput("Enter Time TO in format: HH:MM : " );
-			Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
-			Matcher matcher = pattern.matcher(string);
-			if (matcher.matches()) {
-
-				reservation.setTimeTo(string);
-				break;
-			} else {
-				System.out.println("The Date in not valid. Try it again");
-			}
-		}
-		while (true) {
-			//TODO: zvalidovat prázný vstup
 			String input = Choices.getInput("Enter Expected persons count: ");
 			int intHour = Integer.parseInt(input);
 			if (intHour >= 1 && intHour <= actualMeetingRoom.getCapacity()) {
@@ -287,37 +291,6 @@ public class ReservationController {
 
 		actualMeetingRoom.addReservation(reservation);
 		System.out.println("The reservation was successful created");
-	}
-
-	private boolean checkTime (String string, Reservation thisReservation) {
-		Pattern pattern = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
-		Matcher matcher = pattern.matcher(string);
-		boolean sameDate = false;
-		for (Reservation reservation : actualMeetingRoom.getReservations()) {
-			if (thisReservation.getDate().equals(reservation.getDate())) {
-				sameDate = true;
-			}
-		}
-		if (matcher.matches()) {
-			if (sameDate) {
-				for (Reservation reservation : actualMeetingRoom.getReservations()) {
-					if (reservation.getTimeFrom().equals(string)) {
-
-					}
-				}
-			}
-			return true;
-		} else {
-			System.out.println("The Date in not valid. Try it again");
-			return false;
-		}
-	}
-
-	private float timeToFloat (String time) {
-		//TODO: DOdělat validaci time
-		if (time.length() == 4) {
-		}
-		return 0;
 	}
 
 	private void deleteReservation(MeetingRoom room) {

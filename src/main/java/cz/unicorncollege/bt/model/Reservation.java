@@ -86,4 +86,30 @@ public class Reservation {
 	public void setNote(String note) {
 		this.note = note;
 	}
+
+	public boolean validateTime(String timeFrom, String timeTo, MeetingRoom room, Date date) {
+		timeFrom = timeFrom.replace(":",".");
+		timeTo = timeTo.replace(":",".");
+		if (!room.getReservations().isEmpty()) {
+			for (Reservation reservation : room.getReservations()) {
+				if (reservation.getDate().equals(date)) {
+					if ((toFloat(timeFrom) <= toFloat(reservation.getTimeFrom())) && (toFloat(reservation.getTimeFrom()) <= toFloat(timeTo))) {
+						return false;
+					} else if ((toFloat(timeFrom) <= toFloat(reservation.getTimeTo())) && (toFloat(reservation.getTimeTo()) <= toFloat(timeTo))) {
+						return false;
+					}
+				}
+			}
+		}
+		if (toFloat(timeFrom)>= toFloat(timeTo)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public float toFloat (String time) {
+		float floatTime = Float.parseFloat(time);
+		return floatTime;
+	}
 }

@@ -160,7 +160,6 @@ public class FileParser {
 	public static List<MeetingCentre> loadDataFromFile() {
 		List<MeetingCentre> myMeetingCentres = new ArrayList<>();
 		String location = "myFile.csv";
-		//TODO: Dodelat valizaci
 		String locationXML = "reservations.xml";
 		File csvFile = new File(location);
 		File xmlFile = new File(location);
