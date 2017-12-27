@@ -1,17 +1,11 @@
 package cz.unicorncollege.bt.utils;
 
 import com.opencsv.CSVReader;
-import com.sun.org.apache.bcel.internal.classfile.Code;
 import cz.unicorncollege.bt.model.MeetingCentre;
 import cz.unicorncollege.bt.model.MeetingRoom;
 import cz.unicorncollege.bt.model.Reservation;
-import cz.unicorncollege.controller.ReservationController;
 import org.w3c.dom.*;
 import org.w3c.dom.Element;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
