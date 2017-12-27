@@ -53,24 +53,6 @@ public class MeetingRoom extends MeetingObject {
 		return hashMap;
 	}
 
-//	public static HashMap<String, List<Reservation>> loadReservationTimes(List<Reservation> reservations, MeetingRoom meetingRoom) {
-//		HashMap<String, List<Reservation>> reservationsHash = new HashMap<>();
-//		if (reservations != null) {
-//			for (Reservation reservation : reservations) {
-//				if (reservation.getMeetingRoom().getCode().equals(meetingRoom.getCode())) {
-//					if (reservationsHash.get(reservation.getFormattedDate()) == null) {
-//						List<Reservation> singleReservation = new ArrayList<>();
-//						singleReservation.add(reservation);
-//						reservationsHash.put(reservation.getFormattedDate(), singleReservation);
-//					} else {
-//						reservationsHash.get(reservation.getFormattedDate()).add(reservation);
-//					}
-//				}
-//			}
-//		}
-//		return reservationsHash;
-//	}
-
 	public List<Reservation> getSortedReservationsByDate(Date getSortedReservationsByDate) {
 		//TODO get reservations by date and return sorted reservations by hours
 		return null;
@@ -83,6 +65,7 @@ public class MeetingRoom extends MeetingObject {
 		this.reservations.remove(reservation);
 	}
 
+	//TODO: Smazat
 	public boolean hasRoomReservation(MeetingRoom room) {
 		if (room.getReservations().size() > 0) {
 			return true;
