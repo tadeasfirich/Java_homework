@@ -49,4 +49,12 @@ public class MeetingRoom extends MeetingObject {
 	public void removeReservation (Reservation reservation) {
 		this.reservations.remove(reservation);
 	}
+
+	public boolean hasRoomReservation(MeetingRoom room) {
+		if (room.getReservations().size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

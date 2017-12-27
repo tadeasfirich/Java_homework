@@ -192,8 +192,9 @@ public class ReservationController {
 			Pattern pattern = Pattern.compile("^([1-9]|[12]\\d|3[01]){1}.(0?[1-9]|1[012]){1}.\\d{4}$");
 			Matcher matcher = pattern.matcher(string);
 			if (matcher.matches()) {
-				DateFormat format = new SimpleDateFormat("DD.MM.YYYY");
+				DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 				Date date = null;
+				//TODO: Předělat převodník nefunguje správně
 				try {
 					date = format.parse(string);
 				} catch (ParseException e) {
@@ -344,7 +345,7 @@ public class ReservationController {
 					break;
 				}
 				if (matcher.matches()) {
-					DateFormat format = new SimpleDateFormat("DD.MM.YYYY");
+					DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 					Date date = null;
 					try {
 						date = format.parse(string);

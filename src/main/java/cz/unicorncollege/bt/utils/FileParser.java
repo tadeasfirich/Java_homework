@@ -9,6 +9,9 @@ import cz.unicorncollege.controller.ReservationController;
 import org.w3c.dom.*;
 import org.w3c.dom.Element;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -367,30 +370,40 @@ public class FileParser {
 
 
 		JSONObject obj = new JSONObject();
-        obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
-        obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
+		obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
+		obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
         JSONArray data = new JSONArray();
+
 
         for (MeetingCentre centre : centres) {
             JSONObject meetingCentre = new JSONObject();
-            for (MeetingRoom room : centre.getMeetingRooms()) {
-                meetingCentre.put("meetingCentre", centre.getCode());
-                meetingCentre.put("meetingRoom", room.getCode());
-                JSONObject reservations = new JSONObject();
-                for (Reservation reservation : room.getReservations()) {
-                    JSONArray date = new JSONArray();
-                    date.add("from: " + reservation.getTimeFrom());
-                    date.add("to: " + reservation.getTimeTo());
-                    date.add("expectedPersonsCount: " + reservation.getExpectedPersonCount());
-                    date.add("customer: " + reservation.getCustomer());
-                    date.add("videoConference: " + reservation.isNeedVideoConference());
-                    date.add("note: " + reservation.getNote());
-                    reservations.put(reservation.getDottedDate(), date);
-                }
-                meetingCentre.put("reservations", reservations);
-            }
-            data.add(meetingCentre);
+            if (centre.hasCentreReservation()) {
+
+				for (MeetingRoom room : centre.getMeetingRooms()) {
+					if (room.hasRoomReservation(room)) {
+
+						meetingCentre.put("meetingCentre", centre.getCode());
+						meetingCentre.put("meetingRoom", room.getCode());
+						JSONObject reservations = new JSONObject();
+
+						System.out.println();
+						for (Reservation reservation : room.getReservations()) {
+							JSONArray date = new JSONArray();
+							date.add("from: " + reservation.getTimeFrom());
+							date.add("to: " + reservation.getTimeTo());
+							date.add("expectedPersonsCount: " + reservation.getExpectedPersonCount());
+							date.add("customer: " + reservation.getCustomer());
+							date.add("videoConference: " + reservation.isNeedVideoConference());
+							date.add("note: " + reservation.getNote());
+							reservations.put(reservation.getDottedDate(), date);
+						}
+						meetingCentre.put("reservations", reservations);
+					}
+				}
+				data.add(meetingCentre);
+			}
         }
+
 		obj.put("data", data);
 
 		// try-with-resources statement based on post comment below :)
@@ -401,6 +414,3 @@ public class FileParser {
 		}
 	}
 }
-
-
-//fasdfadsfas

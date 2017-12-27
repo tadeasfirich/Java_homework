@@ -16,4 +16,17 @@ public class MeetingCentre extends MeetingObject {
 	public void removeMeetingRoom (MeetingRoom meetingRoom) {
 		this.meetingRooms.remove(meetingRoom);
 	}
+
+	public boolean hasCentreReservation () {
+		Integer counter = 0;
+		for (MeetingRoom room : getMeetingRooms()) {
+			counter += room.getReservations().size();
+		}
+
+		if (counter > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
