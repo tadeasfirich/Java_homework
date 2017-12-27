@@ -358,16 +358,6 @@ public class FileParser {
 	public static void exportToJSON(List<MeetingCentre> centres) throws IOException {
 		//TODO: Dodělat JSON
 
-		//TODO: Dodelat iteraci
-//        List<MeetingCentre> orderedCentres = null;
-//        for (MeetingCentre centre : centres) {
-//            System.out.println(centre.getCode());
-//            if (orderedCentres.isEmpty()) {
-//                orderedCentres.add(centre);
-//            }
-//
-//        }
-
 
 		JSONObject obj = new JSONObject();
 		obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
@@ -387,15 +377,27 @@ public class FileParser {
 						JSONObject reservations = new JSONObject();
 
 						System.out.println();
-						for (Reservation reservation : room.getReservations()) {
+
+						Set<String> hashKeys = room.getReservationsByDate().keySet();
+						for (String hashKey : hashKeys) {
+							System.out.println(hashKey);
 							JSONArray date = new JSONArray();
-							date.add("from: " + reservation.getTimeFrom());
-							date.add("to: " + reservation.getTimeTo());
-							date.add("expectedPersonsCount: " + reservation.getExpectedPersonCount());
-							date.add("customer: " + reservation.getCustomer());
-							date.add("videoConference: " + reservation.isNeedVideoConference());
-							date.add("note: " + reservation.getNote());
-							reservations.put(reservation.getDottedDate(), date);
+							for (Reservation reservation : room.getReservationsByDate().get(hashKey)) {
+								//Smazat
+//								System.out.println(hashKey);
+//								System.out.println(reservation.getTimeFrom());
+//								System.out.println();
+								JSONObject singleReservation = new JSONObject();
+								singleReservation.put("from", reservation.getTimeFrom());
+								singleReservation.put("to", reservation.getTimeTo());
+								singleReservation.put("expectedPersonsCount", reservation.getExpectedPersonCount());
+								singleReservation.put("customer", reservation.getCustomer());
+								singleReservation.put("videoConference", reservation.isNeedVideoConference());
+								singleReservation.put("note", reservation.getNote());
+								date.add(singleReservation);
+							}
+							reservations.put(hashKey, date);
+							System.out.println(reservations);
 						}
 						meetingCentre.put("reservations", reservations);
 					}
@@ -413,4 +415,59 @@ public class FileParser {
 			System.out.println("\nJSON Object: " + obj);
 		}
 	}
+
+//	public static void exportDataToJSON(ReservationController controllReservation) {
+//		// TODO: Smazat!!!!!!!!!!
+//
+//		List<MeetingRoom> meetingRooms = ReservationController.loadAllMeetingRooms(data);
+//		JsonArrayBuilder dataArr = Json.createArrayBuilder();
+//		for (MeetingRoom meetingRoom : meetingRooms) {
+//			HashMap<String, List<Reservation>> reservationsForRoom = loadReservationTimes(meetingRoom.getReservations(), meetingRoom);
+//			JsonObjectBuilder reservationsHash = Json.createObjectBuilder();
+//
+//			Set<String> dateKeys = reservationsForRoom.keySet();
+//			for (String dateKey : dateKeys) {
+//				JsonArrayBuilder reservations = Json.createArrayBuilder();
+//				if (reservationsForRoom.get(dateKey) == null) {
+//					reservations.add("");
+//				} else {
+//					for (Reservation reservation : reservationsForRoom.get(dateKey)) {
+//						JsonObjectBuilder reservationObj = Json.createObjectBuilder();
+//						reservationObj.add("from", reservation.getTimeFrom());
+//						reservationObj.add("to", reservation.getTimeTo());
+//						reservationObj.add("expectedPersonCount", reservation.getExpectedPersonCount());
+//						reservationObj.add("customer", reservation.getCustomer());
+//						reservationObj.add("videoConference", reservation.isNeedVideoConference());
+//						reservationObj.add("note", reservation.getNote());
+//						reservations.add(reservationObj.build());
+//					}
+//				}
+//				reservationsHash.add(dateKey, reservations);
+//			}
+//			JsonObjectBuilder meetingCentreAndRoom = Json.createObjectBuilder();
+//			meetingCentreAndRoom.add("meetingCentre", meetingRoom.getMeetingCentre().getCode());
+//			meetingCentreAndRoom.add("meetingRoom", meetingRoom.getCode());
+//			meetingCentreAndRoom.add("reservations", reservationsHash.build());
+//			dataArr.add(meetingCentreAndRoom.build());
+//
+//		}
+//		JsonObject json = Json.createObjectBuilder()
+//				.add("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0")
+//				.add("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE")
+//				.add("data", dataArr).build();
+//
+//		String fileName = Choices.getInput("Enter name of the file for export: ");
+//
+//		try (FileWriter file = new FileWriter(fileName + ".json")) {
+//			file.write(json.toString());
+//			System.out.println("************************************************");
+//			System.out.println("Data was exported correctly. The file is here: " + fileName + ".json");
+//			System.out.println("************************************************");
+//		} catch (java.io.IOException e) {
+//			System.out.println("************************************************");
+//			System.out.println("Something terrible happend during exporting!");
+//			System.out.println("************************************************");
+//		}
+//
+//	}
 }

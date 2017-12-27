@@ -2,7 +2,7 @@
 <reservatons>
     <reservation>
         <room>EBC-C7-MR:1_1</room>
-        <date>2017-27-12</date>
+        <date>2017-12-27</date>
         <timeFrom>10:00</timeFrom>
         <timeTo>16:00</timeTo>
         <expectedPersonCount>8</expectedPersonCount>
@@ -11,7 +11,7 @@
     </reservation>
     <reservation>
         <room>EBC-C7-MR:1_2</room>
-        <date>2017-27-12</date>
+        <date>2017-12-27</date>
         <timeFrom>13:00</timeFrom>
         <timeTo>16:00</timeTo>
         <expectedPersonCount>8</expectedPersonCount>
@@ -20,7 +20,7 @@
     </reservation>
     <reservation>
         <room>EBC-C7-MR:1_2</room>
-        <date>2017-27-12</date>
+        <date>2017-12-27</date>
         <timeFrom>16:30</timeFrom>
         <timeTo>20:00</timeTo>
         <expectedPersonCount>3</expectedPersonCount>
@@ -29,7 +29,7 @@
     </reservation>
     <reservation>
         <room>EBC-PAR-MR:1_2</room>
-        <date>2017-28-12</date>
+        <date>2017-12-28</date>
         <timeFrom>13:00</timeFrom>
         <timeTo>16:00</timeTo>
         <expectedPersonCount>12</expectedPersonCount>
