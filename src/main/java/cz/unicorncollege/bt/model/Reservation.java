@@ -26,12 +26,12 @@ public class Reservation {
 	}
 
 	public String getFormattedDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
 
 	public String getDottedDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("DD.MM.YYYY");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		return sdf.format(date);
 	}
 

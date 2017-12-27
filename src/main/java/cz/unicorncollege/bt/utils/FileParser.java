@@ -229,7 +229,7 @@ public class FileParser {
 					//Předelat na DATE
 					String string = eElement.getElementsByTagName("date").item(0).getTextContent();
 
-					DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+					DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 					Date date = null;
 					try {
 						date = format.parse(string);
@@ -407,7 +407,7 @@ public class FileParser {
 		obj.put("data", data);
 
 		// try-with-resources statement based on post comment below :)
-		try (FileWriter file = new FileWriter("file1.txt")) {
+		try (FileWriter file = new FileWriter("file1.json")) {
 			file.write(obj.toJSONString());
 			System.out.println("Successfully Copied JSON Object to File...");
 			System.out.println("\nJSON Object: " + obj);

@@ -438,7 +438,7 @@ public class ReservationController {
 	 * @return
 	 */
 	private String getFormattedDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		return sdf.format(actualDate);
 	}
