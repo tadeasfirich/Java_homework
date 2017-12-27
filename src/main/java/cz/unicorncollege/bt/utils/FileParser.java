@@ -365,7 +365,8 @@ public class FileParser {
 //
 //        }
 
-        JSONObject obj = new JSONObject();
+
+		JSONObject obj = new JSONObject();
         obj.put("schema", "PLUS4U.EBC.MCS.MeetingRoom_Schedule_1.0");
         obj.put("uri", "ues:UCL-BT:UCL.INF/DEMO_REZERVACE:EBC.MCS.DEMO/MR001/SCHEDULE");
         JSONArray data = new JSONArray();
