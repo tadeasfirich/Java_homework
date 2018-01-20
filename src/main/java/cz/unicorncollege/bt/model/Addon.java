@@ -1,12 +1,38 @@
 package cz.unicorncollege.bt.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Addon {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private Category category;	
+
+	@Column
+	private Category category;
+
+	@Column
 	private String name;
+
+	@Column
 	private int amount;
+
+	@Column
 	private int minimalAmount;
-	
+
+	public Addon(){}
+
+	@Override
+	public String toString() {
+		return "Addon{" +
+				"id=" + id +
+				", category=" + category +
+				", name='" + name + '\'' +
+				", amount=" + amount +
+				", minimalAmount=" + minimalAmount +
+				'}';
+	}
+
 	public long getId() {
 		return id;
 	}

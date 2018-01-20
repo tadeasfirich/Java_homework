@@ -8,6 +8,8 @@ import cz.unicorncollege.bt.utils.FileParser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import org.hibernate.cfg.Configuration;
+
 /**
  * Main controller class.
  * Contains methods to communicate with user and methods to work with files.
@@ -48,6 +50,7 @@ public class MainController {
 	 * @param argv String[]
 	 */
 	public static void main(String[] argv) {
+		factory = new Configuration().configure().buildSessionFactory();
 		MainController instance = new MainController();
 		instance.run();
 	}
