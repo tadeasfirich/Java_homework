@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import cz.unicorncollege.bt.utils.Choices;
 import cz.unicorncollege.bt.utils.FileParser;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * Main controller class.
@@ -15,7 +17,19 @@ import cz.unicorncollege.bt.utils.FileParser;
 public class MainController {
 	private MeetingController controll;
 	private ReservationController controllReservation;
+	private AddonsController addOnsController;
+	private static SessionFactory factory;
+	private static Session session;
 	//TODO: Neošetřený prázdný vstup z menu. Chybí komentáře v kódu.
+
+	public static Session getSession() {
+		if (session != null && session.isOpen()) {
+			return session;
+		} else {
+			session = factory.openSession();
+			return session;
+		}
+	}
 
 	/**
 	 * Constructor of main class.
