@@ -35,6 +35,14 @@ public class Reservation {
 	@Column
 	private String note;
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public MeetingRoom getMeetingRoom() {
 		return meetingRoom;
 	}
