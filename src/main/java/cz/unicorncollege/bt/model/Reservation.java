@@ -1,16 +1,38 @@
 package cz.unicorncollege.bt.model;
 
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Entity
 public class Reservation {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@JoinColumn
 	private MeetingRoom meetingRoom;
+
+	@Column
 	private Date date;
+
+	@Column
 	private String timeFrom;
+
+	@Column
 	private String timeTo;
+
+	@Column
 	private int expectedPersonCount;
+
+	@Column
 	private String customer;
+
+	@Column
 	private boolean needVideoConference;
+
+	@Column
 	private String note;
 
 	public MeetingRoom getMeetingRoom() {

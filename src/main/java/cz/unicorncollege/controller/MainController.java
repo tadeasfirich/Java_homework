@@ -3,10 +3,16 @@ package cz.unicorncollege.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.unicorncollege.bt.model.Addon;
 import cz.unicorncollege.bt.utils.Choices;
 import cz.unicorncollege.bt.utils.FileParser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 
 import org.hibernate.cfg.Configuration;
 
@@ -20,18 +26,24 @@ public class MainController {
 	private MeetingController controll;
 	private ReservationController controllReservation;
 	private AddonsController addOnsController;
-	private static SessionFactory factory;
+	private static SessionFactory sessionFactory = buildSessionFactory();
+
+	private static SessionFactory buildSessionFactory() {
+		final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+		return new MetadataSources(registry).buildMetadata().buildSessionFactory();
+	}
+
 	private static Session session;
 	//TODO: Neošetřený prázdný vstup z menu. Chybí komentáře v kódu.
 
-	public static Session getSession() {
-		if (session != null && session.isOpen()) {
-			return session;
-		} else {
-			session = factory.openSession();
-			return session;
-		}
-	}
+//	public static Session getSession() {
+//		if (session != null && session.isOpen()) {
+//			return session;
+//		} else {
+//			session = buildSessionFactory().openSession();
+//			return session;
+//		}
+//	}
 
 	/**
 	 * Constructor of main class.
@@ -50,7 +62,21 @@ public class MainController {
 	 * @param argv String[]
 	 */
 	public static void main(String[] argv) {
-		factory = new Configuration().configure().buildSessionFactory();
+		//factory = new Configuration().configure().buildSessionFactory();
+		Addon addon = new Addon(null,"Honza", 200, 9);
+
+		// Open a session
+		Session session = sessionFactory.openSession();
+		// Begin a transaction
+		session.beginTransaction();
+		// Use the session to save the contract
+		session.save(addon);
+		// Commit the transaction
+		session.getTransaction().commit();
+		// Cloase the session
+		session.close();
+
+		System.out.println(addon);
 		MainController instance = new MainController();
 		instance.run();
 	}
@@ -63,6 +89,7 @@ public class MainController {
 		choices.add("List all Meeting Centres");
 		choices.add("Add new Meeting Centre");
 		choices.add("Reservations");
+		choices.add("Addons menu");
 		choices.add("Import Data");
 		choices.add("Export Data");
 		choices.add("Exit and Save");
@@ -85,13 +112,16 @@ public class MainController {
 					controll.listAllMeetingCentres();
 					break;
 				case 5:
+					//controllAddons.showAddonsMenu();
+					break;
+				case 6:
 					try {
 						FileParser.exportToJSON(controll.getMeetingCentres());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					break;
-				case 6:
+				case 7:
 					FileParser.saveData(controll.toSaveString());
 					try {
 						FileParser.saveDataToXML(controll.getMeetingCentres());
@@ -99,7 +129,7 @@ public class MainController {
 						e.printStackTrace();
 					}
 					System.exit(0);
-				case 7:
+				case 8:
 					System.exit(0);
 			}
 		}

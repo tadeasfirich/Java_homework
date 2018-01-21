@@ -8,7 +8,8 @@ public class Addon {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column
+	@ManyToOne
+	@JoinColumn
 	private Category category;
 
 	@Column
@@ -20,7 +21,9 @@ public class Addon {
 	@Column
 	private int minimalAmount;
 
-	public Addon(){}
+	public Addon(String category, String name, int amount, int minimalAmount){}
+
+	public Addon() {}
 
 	@Override
 	public String toString() {
