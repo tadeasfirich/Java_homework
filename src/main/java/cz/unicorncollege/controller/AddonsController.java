@@ -92,30 +92,32 @@ public class AddonsController {
 		addon.setCategory(findCategoryByCode());
 
 		while (true) {
-
 			String string = Choices.getInput("Addon's name: " );
-			if (string != null) {
-
+			Pattern pattern = Pattern.compile(".{2,100}");
+			Matcher matcher = pattern.matcher(string);
+			if (matcher.matches()) {
 				addon.setName(string);
 				break;
 			} else {
 				System.out.println("The Name in not valid. Try it again");
 			}
 		}
+
 		while (true) {
 
 			String string = Choices.getInput("Amount of items (max:" + addon.getMinimalAmount() + "): ");
 			if (string != null) {
+				int amount;
 				try
 				{
-					Integer.parseInt(string);
+					amount = Integer.parseInt(string);
 				} catch (NumberFormatException ex)
 				{
 					System.out.println("This is not a number. Try it again");
 					continue;
 				}
-				if (Integer.parseInt(string) <= addon.getMinimalAmount()) {
-					addon.setAmount(Integer.parseInt(string));
+				if (amount >= 0 && amount <= addon.getMinimalAmount()) {
+					addon.setAmount(amount);
 					break;
 				} else {
 					System.out.println("Your number is too large. Try it again");
@@ -143,9 +145,8 @@ public class AddonsController {
 	}
 
 	private void editAddon() {
+		//TODO: Dodelat
 		listAllAddons();
-
-
 
 		Addon addon = addonMenu();
 
