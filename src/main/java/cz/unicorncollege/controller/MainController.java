@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.unicorncollege.bt.model.Addon;
+import cz.unicorncollege.bt.model.Category;
 import cz.unicorncollege.bt.utils.Choices;
 import cz.unicorncollege.bt.utils.FileParser;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.SessionFactory;
@@ -26,24 +28,26 @@ public class MainController {
 	private MeetingController controll;
 	private ReservationController controllReservation;
 	private AddonsController addOnsController;
-	private static SessionFactory sessionFactory = buildSessionFactory();
-
-	private static SessionFactory buildSessionFactory() {
-		final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-		return new MetadataSources(registry).buildMetadata().buildSessionFactory();
-	}
-
+//	private static SessionFactory sessionFactory = buildSessionFactory();
+	private static SessionFactory factory;
 	private static Session session;
+
+//	private static SessionFactory buildSessionFactory() {
+//		final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+//		return new MetadataSources(registry).buildMetadata().buildSessionFactory();
+//	}
+
+
 	//TODO: Neošetřený prázdný vstup z menu. Chybí komentáře v kódu.
 
-//	public static Session getSession() {
-//		if (session != null && session.isOpen()) {
-//			return session;
-//		} else {
-//			session = buildSessionFactory().openSession();
-//			return session;
-//		}
-//	}
+	public static Session getSession() {
+		if (session != null && session.isOpen()) {
+			return session;
+		} else {
+			session = factory.openSession();
+			return session;
+		}
+	}
 
 	/**
 	 * Constructor of main class.
@@ -53,6 +57,8 @@ public class MainController {
 		controll.init();
 
 		controllReservation = new ReservationController(controll);
+
+		addOnsController = new AddonsController();
 	}
 
 
@@ -62,21 +68,8 @@ public class MainController {
 	 * @param argv String[]
 	 */
 	public static void main(String[] argv) {
-		//factory = new Configuration().configure().buildSessionFactory();
-		Addon addon = new Addon(null,"Honza", 200, 9);
+		factory = new Configuration().configure().buildSessionFactory();
 
-		// Open a session
-		Session session = sessionFactory.openSession();
-		// Begin a transaction
-		session.beginTransaction();
-		// Use the session to save the contract
-		session.save(addon);
-		// Commit the transaction
-		session.getTransaction().commit();
-		// Cloase the session
-		session.close();
-
-		System.out.println(addon);
 		MainController instance = new MainController();
 		instance.run();
 	}
@@ -108,11 +101,11 @@ public class MainController {
 					controllReservation.showReservationMenu();
 					break;
 				case 4:
-					controll.setMeetingCentres(FileParser.importData());
-					controll.listAllMeetingCentres();
+					addOnsController.showAddonsMenu();
 					break;
 				case 5:
-					//controllAddons.showAddonsMenu();
+					controll.setMeetingCentres(FileParser.importData());
+					controll.listAllMeetingCentres();
 					break;
 				case 6:
 					try {

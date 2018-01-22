@@ -19,7 +19,7 @@ public class Addon {
 	private int amount;
 
 	@Column
-	private int minimalAmount;
+	private int minimalAmount = 1000;
 
 	public Addon(String category, String name, int amount, int minimalAmount){}
 
@@ -35,6 +35,13 @@ public class Addon {
 				", minimalAmount=" + minimalAmount +
 				'}';
 	}
+
+	//public static class ContactBuilder {
+
+//	public AddonBuilder(String firstName, String lastName) {
+//		this.firstName = firstName;
+//		this.lastName = lastName;
+//	}
 
 	public long getId() {
 		return id;
