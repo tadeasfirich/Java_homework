@@ -105,7 +105,7 @@ public class AddonsController {
 
 		while (true) {
 
-			String string = Choices.getInput("Amount of items (max:" + addon.getMinimalAmount() + "): ");
+			String string = Choices.getInput("Amount of items (max:" + addon.getMaximalAmount() + "): ");
 			if (string != null) {
 				int amount;
 				try
@@ -116,7 +116,7 @@ public class AddonsController {
 					System.out.println("This is not a number. Try it again");
 					continue;
 				}
-				if (amount >= 0 && amount <= addon.getMinimalAmount()) {
+				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
 					addon.setAmount(amount);
 					break;
 				} else {
@@ -126,6 +126,8 @@ public class AddonsController {
 				System.out.println("The Name in not valid. Try it again");
 			}
 		}
+
+		addon.setMaximalAmount(1000);
 
 		// Open a session
 		Session session = sessionFactory.openSession();
@@ -149,6 +151,54 @@ public class AddonsController {
 		listAllAddons();
 
 		Addon addon = addonMenu();
+
+		System.out.println(addon.getName());
+		System.out.println(addon.getCategory());
+		System.out.println(addon.getAmount());
+
+		addon.setCategory(findCategoryByCode(addon.getCategory()));
+
+		while (true) {
+			String string = Choices.getInput("Addon's name" + addon.getName() + ": " );
+			Pattern pattern = Pattern.compile(".{2,100}");
+			Matcher matcher = pattern.matcher(string);
+			if (string.equals("")) {
+				break;
+			}
+			if (matcher.matches()) {
+				addon.setName(string);
+				break;
+			} else {
+				System.out.println("The Name in not valid. Try it again");
+			}
+		}
+
+		while (true) {
+
+			String string = Choices.getInput("Maximal Amount of items (" + addon.getMaximalAmount() + "): ");
+			if (string.equals("")) {
+				break;
+			}
+			if (string.equals(null)) {
+				int amount;
+				try
+				{
+					amount = Integer.parseInt(string);
+				} catch (NumberFormatException ex)
+				{
+					System.out.println("This is not a number. Try it again");
+					continue;
+				}
+				if (amount >= 0) {
+					addon.setMaximalAmount(amount);
+					break;
+				} else {
+					System.out.println("Your number is too small. Try it again");
+				}
+			} else {
+				System.out.println("The Name in not valid. Try it again");
+			}
+		}
 
 		Session session = sessionFactory.openSession();
 
@@ -214,7 +264,7 @@ public class AddonsController {
 		return addon;
 	}
 
-	public Category findCategoryByCode() {
+	public List<Category> showCategoryList() {
 		Session session = sessionFactory.openSession();
 		// Create Criteria
 		Criteria criteria = session.createCriteria(Category.class);
@@ -231,11 +281,43 @@ public class AddonsController {
 		for (Category category : categories) {
 			System.out.println(category.getCode() + ", " + category.getName());
 		}
+		return categories;
+	}
+
+	public Category findCategoryByCode() {
+		List<Category> categories = showCategoryList();
 
 		Category foundCategory = null;
 		while (true) {
 			boolean isFounded = false;
 			String categoryCode = Choices.getInput("Enter Code of the Category: ");
+			for (Category category : categories) {
+				if (categoryCode.equals(category.getCode())) {
+					foundCategory = category;
+					isFounded = true;
+				}
+			}
+			if (!isFounded) {
+				System.out.println("There is no category: " + categoryCode);
+				foundCategory = null;
+			} else {
+				break;
+			}
+		}
+		return foundCategory;
+	}
+
+	public Category findCategoryByCode(Category previousCategory) {
+		List<Category> categories = showCategoryList();
+
+		Category foundCategory = null;
+		while (true) {
+			boolean isFounded = false;
+			String categoryCode = Choices.getInput("Enter Code of the Category (" + previousCategory.getCode() + "): ");
+			if (categoryCode.equals(previousCategory.getCode())) {
+				foundCategory = previousCategory;
+				break;
+			}
 			for (Category category : categories) {
 				if (categoryCode.equals(category.getCode())) {
 					foundCategory = category;

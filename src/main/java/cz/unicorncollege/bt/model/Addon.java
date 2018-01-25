@@ -19,9 +19,9 @@ public class Addon {
 	private int amount;
 
 	@Column
-	private int minimalAmount = 1000;
+	private int maximalAmount;
 
-	public Addon(String category, String name, int amount, int minimalAmount){}
+	public Addon(String category, String name, int amount, int maximalAmount){}
 
 	public Addon() {}
 
@@ -32,7 +32,7 @@ public class Addon {
 				", category=" + category +
 				", name='" + name + '\'' +
 				", amount=" + amount +
-				", minimalAmount=" + minimalAmount +
+				", maximalAmount=" + maximalAmount+
 				'}';
 	}
 
@@ -75,11 +75,11 @@ public class Addon {
 		this.amount = amount;
 	}
 	
-	public int getMinimalAmount() {
-		return minimalAmount;
+	public int getMaximalAmount() {
+		return maximalAmount;
 	}
 	
-	public void setMinimalAmount(int minimalAmount) {
-		this.minimalAmount = minimalAmount;
+	public void setMaximalAmount(int maximalAmount) {
+		this.maximalAmount = maximalAmount;
 	}
 }
