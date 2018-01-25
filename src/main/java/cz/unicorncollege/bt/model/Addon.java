@@ -19,7 +19,10 @@ public class Addon {
 	private int amount;
 
 	@Column
-	private int maximalAmount;
+	private int maximalAmount = 1000;
+
+	@Column
+	private boolean isDeleted = false;
 
 	public Addon(String category, String name, int amount, int maximalAmount){}
 
@@ -32,7 +35,7 @@ public class Addon {
 				", category=" + category +
 				", name='" + name + '\'' +
 				", amount=" + amount +
-				", maximalAmount=" + maximalAmount+
+				", maximalAmount=" + maximalAmount +
 				'}';
 	}
 
@@ -46,40 +49,48 @@ public class Addon {
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public Category getCategory() {
 		return category;
 	}
-	
+
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public int getAmount() {
 		return amount;
 	}
-	
+
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	
+
 	public int getMaximalAmount() {
 		return maximalAmount;
 	}
-	
+
 	public void setMaximalAmount(int maximalAmount) {
 		this.maximalAmount = maximalAmount;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
 	}
 }

@@ -76,10 +76,29 @@ public class AddonsController {
 		// Close the session
 		session.close();
 
-		System.out.println("Id, Name, Category, Amount");
+		System.out.println("Id, Name, Category, Amount, MaxAmount");
 		for (Addon addon : addons) {
-			System.out.println(addon.getId() + ", " + addon.getName() + ", " + addon.getCategory().getName() + ", " + addon.getAmount());
+			System.out.println(addon.getId() + ", " + addon.getName() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount());
 		}
+	}
+
+	private List<Addon> returnListAllAddons() {
+		Session session = sessionFactory.openSession();
+
+		// Create Criteria
+		Criteria criteria = session.createCriteria(Addon.class);
+
+		// Get a list of Contact objects according to the Criteria object
+		List<Addon> addons = criteria.list();
+
+		// Close the session
+		session.close();
+
+		System.out.println("Id, Name, Category, Amount, MaxAmount");
+		for (Addon addon : addons) {
+			System.out.println(addon.getId() + ", " + addon.getName() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount());
+		}
+		return addons;
 	}
 
 	/**
@@ -127,8 +146,6 @@ public class AddonsController {
 			}
 		}
 
-		addon.setMaximalAmount(1000);
-
 		// Open a session
 		Session session = sessionFactory.openSession();
 
@@ -151,10 +168,6 @@ public class AddonsController {
 		listAllAddons();
 
 		Addon addon = addonMenu();
-
-		System.out.println(addon.getName());
-		System.out.println(addon.getCategory());
-		System.out.println(addon.getAmount());
 
 		addon.setCategory(findCategoryByCode(addon.getCategory()));
 
@@ -179,24 +192,20 @@ public class AddonsController {
 			if (string.equals("")) {
 				break;
 			}
-			if (string.equals(null)) {
-				int amount;
-				try
-				{
-					amount = Integer.parseInt(string);
-				} catch (NumberFormatException ex)
-				{
-					System.out.println("This is not a number. Try it again");
-					continue;
-				}
-				if (amount >= 0) {
-					addon.setMaximalAmount(amount);
-					break;
-				} else {
-					System.out.println("Your number is too small. Try it again");
-				}
+			int amount;
+			try
+			{
+				amount = Integer.parseInt(string);
+			} catch (NumberFormatException ex)
+			{
+				System.out.println("This is not a number. Try it again");
+				continue;
+			}
+			if (amount >= 0) {
+				addon.setMaximalAmount(amount);
+				break;
 			} else {
-				System.out.println("The Name in not valid. Try it again");
+				System.out.println("Your number is too small. Try it again");
 			}
 		}
 
@@ -216,7 +225,16 @@ public class AddonsController {
 	}
 
 	private void deleteAddon() {
-		listAllAddons();
+		List<Addon> addons = returnListAllAddons();
+		Addon theAddon = new Addon();
+		String id = Choices.getInput("Enter Id for delete the Addon: ");
+		for (Addon addon : addons) {
+			if (addon.getId() == Long.valueOf(id)) {
+				theAddon = addon;
+				break;
+			}
+		}
+		theAddon.setDeleted(true);
 	}
 	
 	private void acceptDelivery() {
@@ -314,7 +332,7 @@ public class AddonsController {
 		while (true) {
 			boolean isFounded = false;
 			String categoryCode = Choices.getInput("Enter Code of the Category (" + previousCategory.getCode() + "): ");
-			if (categoryCode.equals(previousCategory.getCode())) {
+			if (categoryCode.length() == 0) {
 				foundCategory = previousCategory;
 				break;
 			}
