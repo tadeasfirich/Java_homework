@@ -75,10 +75,16 @@ public class AddonsController {
 
 		// Close the session
 		session.close();
-
-		System.out.println("Id, Name, Category, Amount, MaxAmount");
+		String mark = "";
+		System.out.println("Id, Name, Category, MinAmount, Amount , MaxAmount");
 		for (Addon addon : addons) {
-			System.out.println(addon.getId() + ", " + addon.getName() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount());
+			if (!addon.isDeleted()) {
+				if (addon.getAmount() < addon.getMinimalAmount()) {
+					mark = "!!";
+				}
+				System.out.println(mark + addon.getId() + ", " + addon.getName() + ", " + addon.getCategory().getName() + ", " + addon.getMinimalAmount() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount() + mark);
+				mark = "";
+			}
 		}
 	}
 
@@ -124,7 +130,31 @@ public class AddonsController {
 
 		while (true) {
 
-			String string = Choices.getInput("Amount of items (max:" + addon.getMaximalAmount() + "): ");
+			String string = Choices.getInput("Recommended amount of items (Max:" + addon.getMaximalAmount() + "): ");
+			if (string != null) {
+				int amount;
+				try
+				{
+					amount = Integer.parseInt(string);
+				} catch (NumberFormatException ex)
+				{
+					System.out.println("This is not a number. Try it again");
+					continue;
+				}
+				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
+					addon.setMinimalAmount(amount);
+					break;
+				} else {
+					System.out.println("Your number is too large. Try it again");
+				}
+			} else {
+				System.out.println("The Name in not valid. Try it again");
+			}
+		}
+
+		while (true) {
+
+			String string = Choices.getInput("Amount of items (Max:" + addon.getMaximalAmount() + "): ");
 			if (string != null) {
 				int amount;
 				try
@@ -164,7 +194,6 @@ public class AddonsController {
 	}
 
 	private void editAddon() {
-		//TODO: Dodelat
 		listAllAddons();
 
 		Addon addon = addonMenu();
@@ -183,6 +212,29 @@ public class AddonsController {
 				break;
 			} else {
 				System.out.println("The Name in not valid. Try it again");
+			}
+		}
+
+		while (true) {
+
+			String string = Choices.getInput("Minimal Recommended Amount of items (" + addon.getMinimalAmount() + "): ");
+			if (string.equals("")) {
+				break;
+			}
+			int amount;
+			try
+			{
+				amount = Integer.parseInt(string);
+			} catch (NumberFormatException ex)
+			{
+				System.out.println("This is not a number. Try it again");
+				continue;
+			}
+			if (amount >= 0) {
+				addon.setMinimalAmount(amount);
+				break;
+			} else {
+				System.out.println("Your number is too small. Try it again");
 			}
 		}
 
@@ -235,10 +287,24 @@ public class AddonsController {
 			}
 		}
 		theAddon.setDeleted(true);
+
+		Session session = sessionFactory.openSession();
+
+		// Begin a transaction
+		session.beginTransaction();
+
+		// Use the session to update the contact
+		session.update(theAddon);
+
+		// Commit the transaction
+		session.getTransaction().commit();
+
+		// Close the session
+		session.close();
 	}
 	
 	private void acceptDelivery() {
-		
+
 	}
 	
 	private void handOver() {
@@ -250,7 +316,6 @@ public class AddonsController {
 
 		while (true) {
 			long id;
-			boolean isFounded = false;
 			String string = Choices.getInput("Enter Id for edit Addon: ");
 			try
 			{

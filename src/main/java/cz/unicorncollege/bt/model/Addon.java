@@ -22,6 +22,9 @@ public class Addon {
 	private int maximalAmount = 1000;
 
 	@Column
+	private int minimalAmount;
+
+	@Column
 	private boolean isDeleted = false;
 
 	public Addon(String category, String name, int amount, int maximalAmount){}
@@ -76,6 +79,14 @@ public class Addon {
 
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+
+	public int getMinimalAmount() {
+		return minimalAmount;
+	}
+
+	public void setMinimalAmount(int minimalAmount) {
+		this.minimalAmount = minimalAmount;
 	}
 
 	public int getMaximalAmount() {
