@@ -22,8 +22,6 @@ public class AddonDelivery {
     @Column
     private Timestamp datetime = new Timestamp(System.currentTimeMillis());
 
-
-
     public long getId() {
         return id;
     }

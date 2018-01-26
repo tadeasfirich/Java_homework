@@ -35,7 +35,6 @@ public class AddonsController {
 		choices.add("Delete Addon");
 		choices.add("Accept delivery");
 		choices.add("Hand Over");
-		choices.add("Helper");
 		choices.add("Back to menu");
 
 		while (true) {
@@ -59,9 +58,6 @@ public class AddonsController {
 				handOver();
 				break;
 			case 7:
-				helper();
-				break;
-			case 8:
 				return;
 			}
 		}
@@ -69,21 +65,21 @@ public class AddonsController {
 	}
 
 	private void helper() {
-		Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
 
-		// Create Criteria
-		Criteria criteria = session.createCriteria(AddonDelivery.class);
+        // Create Criteria
+        Criteria criteria = session.createCriteria(AddonDelivery.class);
 
-		// Get a list of Contact objects according to the Criteria object
-		List<AddonDelivery> addons = criteria.list();
+        // Get a list of Contact objects according to the Criteria object
+        List<AddonDelivery> addons = criteria.list();
 
-		// Close the session
-		session.close();
-		String mark = "";
-		System.out.println("Id, Name, Category, MinAmount, Amount , MaxAmount");
-		for (AddonDelivery addon : addons) {
-			System.out.println(addon.getId() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getCustomerName() + ", " + addon.getDatetime());
-		}
+        // Close the session
+        session.close();
+        String mark = "";
+        System.out.println("Id, Name, Category, MinAmount, Amount , MaxAmount");
+        for (AddonDelivery addon : addons) {
+            System.out.println(addon.getId() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getCustomerName() + ", " + addon.getDatetime());
+        }
 	}
 	/**
 	 * Show list of addons
@@ -183,49 +179,41 @@ public class AddonsController {
 		while (true) {
 
 			String string = Choices.getInput("Recommended amount of items (Max:" + addon.getMaximalAmount() + "): ");
-			if (string != null) {
-				int amount;
-				try
-				{
-					amount = Integer.parseInt(string);
-				} catch (NumberFormatException ex)
-				{
-					System.out.println("This is not a number. Try it again");
-					continue;
-				}
-				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
-					addon.setMinimalAmount(amount);
-					break;
-				} else {
-					System.out.println("Your number is too large. Try it again");
-				}
-			} else {
-				System.out.println("The Name in not valid. Try it again");
-			}
+            int amount;
+            try
+            {
+                amount = Integer.parseInt(string);
+            } catch (NumberFormatException ex)
+            {
+                System.out.println("This is not a number. Try it again");
+                continue;
+            }
+            if (amount >= 0 && amount <= addon.getMaximalAmount()) {
+                addon.setMinimalAmount(amount);
+                break;
+            } else {
+                System.out.println("Your number is too large. Try it again");
+            }
 		}
 
 		while (true) {
 
 			String string = Choices.getInput("Amount of items (Max:" + addon.getMaximalAmount() + "): ");
-			if (string != null) {
-				int amount;
-				try
-				{
-					amount = Integer.parseInt(string);
-				} catch (NumberFormatException ex)
-				{
-					System.out.println("This is not a number. Try it again");
-					continue;
-				}
-				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
-					addon.setAmount(amount);
-					break;
-				} else {
-					System.out.println("Your number is too large. Try it again");
-				}
-			} else {
-				System.out.println("The Name in not valid. Try it again");
-			}
+            int amount;
+            try
+            {
+                amount = Integer.parseInt(string);
+            } catch (NumberFormatException ex)
+            {
+                System.out.println("This is not a number. Try it again");
+                continue;
+            }
+            if (amount >= 0 && amount <= addon.getMaximalAmount()) {
+                addon.setAmount(amount);
+                break;
+            } else {
+                System.out.println("Your number is too large. Try it again");
+            }
 		}
 
 		// Open a session
@@ -315,19 +303,7 @@ public class AddonsController {
 			}
 		}
 
-		Session session = sessionFactory.openSession();
-
-		// Begin a transaction
-		session.beginTransaction();
-
-		// Use the session to update the contact
-		session.update(addon);
-
-		// Commit the transaction
-		session.getTransaction().commit();
-
-		// Close the session
-		session.close();
+		updateAddon(addon);
 	}
 	/**
 	 * Makred addon as deleted
@@ -342,21 +318,7 @@ public class AddonsController {
 				break;
 			}
 		}
-		theAddon.setDeleted(true);
-
-		Session session = sessionFactory.openSession();
-
-		// Begin a transaction
-		session.beginTransaction();
-
-		// Use the session to update the contact
-		session.update(theAddon);
-
-		// Commit the transaction
-		session.getTransaction().commit();
-
-		// Close the session
-		session.close();
+		updateAddon(theAddon);
 	}
 	
 	private void acceptDelivery() {
@@ -367,26 +329,22 @@ public class AddonsController {
 		System.out.println(addon.getName() + ", " + addon.getCategory().getCode() + ", " + addon.getMinimalAmount() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount());
 		while (true) {
 			String string = Choices.getInput("New items: ");
-			if (string != null) {
-				int amount;
-				try
-				{
-					amount = Integer.parseInt(string);
-				} catch (NumberFormatException ex)
-				{
-					System.out.println("This is not a number. Try it again");
-					continue;
-				}
-				amount += addon.getAmount();
-				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
-					addon.setAmount(amount);
-					break;
-				} else {
-					System.out.println("Your number is too large. Try it again");
-				}
-			} else {
-				System.out.println("The Name in not valid. Try it again");
-			}
+            int amount;
+            try
+            {
+                amount = Integer.parseInt(string);
+            } catch (NumberFormatException ex)
+            {
+                System.out.println("This is not a number. Try it again");
+                continue;
+            }
+            amount += addon.getAmount();
+            if (amount >= 0 && amount <= addon.getMaximalAmount()) {
+                addon.setAmount(amount);
+                break;
+            } else {
+                System.out.println("Your number is too large. Try it again");
+            }
 		}
 		updateAddon(addon);
 	}
@@ -400,27 +358,23 @@ public class AddonsController {
 		System.out.println(addon.getName() + ", " + addon.getCategory().getCode() + ", " + addon.getMinimalAmount() + ", " + addon.getAmount() + ", " + addon.getMaximalAmount());
 		while (true) {
 			String string = Choices.getInput("Number of items: ");
-			if (string != null) {
-				int amount;
-				try
-				{
-					amount = Integer.parseInt(string);
-				} catch (NumberFormatException ex)
-				{
-					System.out.println("This is not a number. Try it again");
-					continue;
-				}
-				addonDelivery.setAmount(amount);
-				amount = addon.getAmount() - amount;
-				if (amount >= 0 && amount <= addon.getMaximalAmount()) {
-					addon.setAmount(amount);
-					break;
-				} else {
-					System.out.println("Your number is too large. Try it again");
-				}
-			} else {
-				System.out.println("The Name in not valid. Try it again");
-			}
+            int amount;
+            try
+            {
+                amount = Integer.parseInt(string);
+            } catch (NumberFormatException ex)
+            {
+                System.out.println("This is not a number. Try it again");
+                continue;
+            }
+            addonDelivery.setAmount(amount);
+            amount = addon.getAmount() - amount;
+            if (amount >= 0 && amount <= addon.getMaximalAmount()) {
+                addon.setAmount(amount);
+                break;
+            } else {
+                System.out.println("Your number is too large. Try it again");
+            }
 		}
 		updateAddon(addon);
 		addonDelivery.setCategory(addon.getCategory());
@@ -438,11 +392,15 @@ public class AddonsController {
 		}
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.update(addonDelivery);
+		session.save(addonDelivery);
 		session.getTransaction().commit();
 		session.close();
 		System.out.println("The Delivery was expedited");
 	}
+
+    /**
+     * Save updated addon to the database
+     */
 
 	private void updateAddon(Addon addon) {
 		Session session = sessionFactory.openSession();

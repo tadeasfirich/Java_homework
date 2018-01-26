@@ -11,5 +11,6 @@
 
   <mapping class="cz.unicorncollege.bt.model.Addon" />
   <mapping class="cz.unicorncollege.bt.model.Category" />
+  <mapping class="cz.unicorncollege.bt.model.AddonDelivery"/>
  </session-factory>
 </hibernate-configuration>
