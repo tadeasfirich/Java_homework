@@ -26,7 +26,9 @@ public class AddonsController {
 		final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
 		return new MetadataSources(registry).buildMetadata().buildSessionFactory();
 	}
-
+	/**
+	 * Show the AddonsController menu
+	 */
 	public void showAddonsMenu() {
 		List<String> choices = new ArrayList<String>();
 		choices.add("List all Addons");
@@ -63,28 +65,9 @@ public class AddonsController {
 		}
 		
 	}
-
-	private void helper() {
-        Session session = sessionFactory.openSession();
-
-        // Create Criteria
-        Criteria criteria = session.createCriteria(AddonDelivery.class);
-
-        // Get a list of Contact objects according to the Criteria object
-        List<AddonDelivery> addons = criteria.list();
-
-        // Close the session
-        session.close();
-        String mark = "";
-        System.out.println("Id, Name, Category, MinAmount, Amount , MaxAmount");
-        for (AddonDelivery addon : addons) {
-            System.out.println(addon.getId() + ", " + addon.getCategory().getName() + ", " + addon.getAmount() + ", " + addon.getCustomerName() + ", " + addon.getDatetime());
-        }
-	}
 	/**
 	 * Show list of addons
 	 */
-	
 	private void listAllAddons() {
 		Session session = sessionFactory.openSession();
 
@@ -108,6 +91,9 @@ public class AddonsController {
 			}
 		}
 	}
+	/**
+	 * Shows only addons in the specificated category
+	 */
 	private void filtredListAllAddons(Category category) {
 		Session session = sessionFactory.openSession();
 
@@ -135,6 +121,8 @@ public class AddonsController {
 	}
 	/**
 	 * Show and return list of addons
+	 *
+	 * @return List<Addon> all addons from database
 	 */
 	private List<Addon> returnListAllAddons() {
 		Session session = sessionFactory.openSession();
@@ -156,9 +144,8 @@ public class AddonsController {
 	}
 
 	/**
-	 * Add new addon in database
+	 * Add new addon in the database
 	 */
-	
 	private void addNewAddon() {
 		Addon addon = new Addon();
 
@@ -233,7 +220,7 @@ public class AddonsController {
 		System.out.println("Addon was successfully added");
 	}
 	/**
-	 * Edit addon to database
+	 * Edit addon to the database
 	 */
 	private void editAddon() {
 		listAllAddons();
@@ -306,7 +293,7 @@ public class AddonsController {
 		updateAddon(addon);
 	}
 	/**
-	 * Makred addon as deleted
+	 * Marked addon as deleted
 	 */
 	private void deleteAddon() {
 		List<Addon> addons = returnListAllAddons();
@@ -320,7 +307,9 @@ public class AddonsController {
 		}
 		updateAddon(theAddon);
 	}
-	
+	/**
+	 * Accept new deliveries
+	 */
 	private void acceptDelivery() {
 		Category category = findCategoryByCode();
 		filtredListAllAddons(category);
@@ -348,7 +337,9 @@ public class AddonsController {
 		}
 		updateAddon(addon);
 	}
-	
+	/**
+	 * Hand over goods
+	 */
 	private void handOver() {
 		AddonDelivery addonDelivery = new AddonDelivery();
 		Category category = findCategoryByCode();
@@ -400,6 +391,7 @@ public class AddonsController {
 
     /**
      * Save updated addon to the database
+	 *
      */
 
 	private void updateAddon(Addon addon) {
@@ -446,7 +438,11 @@ public class AddonsController {
 		}
 		return addon;
 	}
-
+	/**
+	 * find Addon by ID
+	 *
+	 * @return addon
+	 */
 	private static Addon findAddonById(long id) {
 		Session session = sessionFactory.openSession();
 
@@ -459,7 +455,11 @@ public class AddonsController {
 		// Return the object
 		return addon;
 	}
-
+	/**
+	 * Show list of addons
+	 *
+	 * @return List<Category> all categories from database
+	 */
 	public List<Category> showCategoryList() {
 		Session session = sessionFactory.openSession();
 		// Create Criteria
@@ -479,7 +479,11 @@ public class AddonsController {
 		}
 		return categories;
 	}
-
+	/**
+	 * Find Category by typed code
+	 *
+	 * @return Category object
+	 */
 	public Category findCategoryByCode() {
 		List<Category> categories = showCategoryList();
 
@@ -502,7 +506,11 @@ public class AddonsController {
 		}
 		return foundCategory;
 	}
-
+	/**
+	 * Show list of addons
+	 *
+	 * @return List<Category> all categories from database
+	 */
 	public Category findCategoryByCode(Category previousCategory) {
 		List<Category> categories = showCategoryList();
 
