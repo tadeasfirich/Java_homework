@@ -86,7 +86,6 @@ public class MeetingRoom {
 	}
 
 	public List<Reservation> getSortedReservationsByDate(Date getSortedReservationsByDate) {
-		//TODO get reservations by date and return sorted reservations by hours
 		return null;
 	}
 
