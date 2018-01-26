@@ -79,7 +79,9 @@ public class ReservationController {
 			System.out.println("!!!!!!!!!!!!");
 		}
 	}
-
+	/**
+	 * Edit the reservation
+	 */
 	private void editReservation(MeetingRoom room) {
 		// TODO list reservation as choices, after chosen reservation edit all
 		if (!room.getReservations().isEmpty()) {
@@ -180,7 +182,9 @@ public class ReservationController {
 			System.out.println("There are no reservations");
 		}
 	}
-
+	/**
+	 * Add new reservation
+	 */
 	private void addNewReservation(MeetingRoom actualMeetingRoom) {
 		// TODO enter data one by one, add new reservation object to the actual
 		Reservation reservation = new Reservation();
@@ -292,7 +296,9 @@ public class ReservationController {
 		actualMeetingRoom.addReservation(reservation);
 		System.out.println("The reservation was successful created");
 	}
-
+	/**
+	 * Delete reservation
+	 */
 	private void deleteReservation(MeetingRoom room) {
 		// TODO list all reservations as choices and let enter item for
 		// deletion, delete it and inform about successful deletion
@@ -303,7 +309,9 @@ public class ReservationController {
 			System.out.println("There are no reservations");
 		}
 	}
-
+	/**
+	 * Change date od the reservation
+	 */
 	private void changeDate(MeetingRoom room) {
 		// TODO let them enter new date in format YYYY-MM-DD, change the actual
 		// date, list actual reservations on this date and menu by
@@ -335,7 +343,11 @@ public class ReservationController {
 			System.out.println("There are no reservations");
 		}
 	}
-
+	/**
+	 * Find reservation by typed identificator
+	 *
+	 * @return Reservation object
+	 */
 	public Reservation getReservation(MeetingRoom room) {
 		System.out.println("Ids of reservations ");
 		String reservationId;
@@ -357,7 +369,9 @@ public class ReservationController {
 		}
 		return room.getReservations().get(Integer.parseInt(reservationId));
 	}
-	//TODO: Dodělat aby si při zadání ničeho vypsalo menu znova
+	/**
+	 * Show menu of Reservation Controller
+	 */
 	private void getItemsToShow(MeetingRoom room) {
 		listReservationsByDate(actualDate);
 
@@ -366,7 +380,7 @@ public class ReservationController {
 		choices.add("Add New Reservation");
 		choices.add("Delete Reservation");
 		choices.add("Change Date");
-		choices.add("Exit");
+		choices.add("Back to menu");
 
 		while (true) {
 			switch (Choices.getChoice("Select an option: ", choices)) {
@@ -387,7 +401,9 @@ public class ReservationController {
 			}
 		}
 	}
-
+	/**
+	 * Show list of sorted reservations by date
+	 */
 	private void listReservationsByDate(Date date) {
 		// list reservations
 		List<Reservation> list = actualMeetingRoom.getSortedReservationsByDate(date);

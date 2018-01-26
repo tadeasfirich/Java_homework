@@ -220,7 +220,7 @@ public class AddonsController {
 		System.out.println("Addon was successfully added");
 	}
 	/**
-	 * Edit addon to the database
+	 * Edit addon
 	 */
 	private void editAddon() {
 		listAllAddons();
