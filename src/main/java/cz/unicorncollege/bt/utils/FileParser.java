@@ -256,9 +256,6 @@ public class FileParser {
 	}
 
 	public static void saveDataToXML(List<MeetingCentre> centres) throws Exception {
-		// TODO: ulozeni dat do souboru ve formatu JSON
-		// TODO: Pořešit, když nejsou žádné rezervace
-
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -273,7 +270,6 @@ public class FileParser {
 				for (MeetingRoom room : centre.getMeetingRooms()) {
 					if (room.getReservations().isEmpty()) {
 						hasNoReservations++;
-						//TODO: Dodelat vyjímku
 					} else {
 						for (Reservation meetingReservation : room.getReservations()) {
 							Element reservation = doc.createElement("reservation");

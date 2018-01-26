@@ -15,6 +15,12 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Reservation Controller class.
+ * Contains methods to use CRUD operations for reservations
+ *
+ * @author Tadeas Firich
+ */
 public class ReservationController {
 	private MeetingController meetingController;
 	public MeetingCentre actualMeetingCentre;
@@ -50,40 +56,45 @@ public class ReservationController {
 			System.out.println();
 			counter += 1;
 		}
+		while (true) {
+			try {
+				String chosenOption = Choices.getInput("Choose the Meeting Centre: ");
+				// get the chosen meeting center
+				actualMeetingCentre = meetingController.getMeetingCentres().get(Integer.parseInt(chosenOption));
+				choices.clear();
 
-		// get the choice as string to parse it to integer later
-		String chosenOption = Choices.getInput("Choose the Meeting Centre: ");
-		// get the chosen meeting center
-		actualMeetingCentre = meetingController.getMeetingCentres().get(Integer.parseInt(chosenOption));
-		choices.clear();
+				// display rooms from actual meeting center
+				if (!actualMeetingCentre.getMeetingRooms().isEmpty()) {
+					counter = 0;
+					for (MeetingRoom room : actualMeetingCentre.getMeetingRooms()) {
+						choices.add(room.getCode() + " - " + room.getName());
+						System.out.print(counter + ": ");
+						System.out.println(room.getName() + ", " + room.getCode() + ", " + room.getDescription());
+						counter += 1;
+					}
 
-		// display rooms from actual meeting center
-		if (!actualMeetingCentre.getMeetingRooms().isEmpty()) {
-			counter = 0;
-			for (MeetingRoom room : actualMeetingCentre.getMeetingRooms()) {
-				choices.add(room.getCode() + " - " + room.getName());
-				System.out.print(counter + ": ");
-				System.out.println(room.getName() + ", " + room.getCode() + ", " + room.getDescription());
-				counter += 1;
+					chosenOption = Choices.getInput("Choose the room to create reservation: ");
+
+					actualMeetingRoom = actualMeetingCentre.getMeetingRooms().get(Integer.parseInt(chosenOption));
+					choices.clear();
+
+					getItemsToShow(actualMeetingRoom);
+				} else {
+					System.out.println("!!!!!!!!!!!!");
+					System.out.println("There are no rooms in this buiding");
+					System.out.println("!!!!!!!!!!!!");
+				}
+			} catch (NumberFormatException ex) {
+				System.out.println("Wrong input. Try it again");
 			}
 
-			chosenOption = Choices.getInput("Choose the room to create reservation: ");
-
-			actualMeetingRoom = actualMeetingCentre.getMeetingRooms().get(Integer.parseInt(chosenOption));
-			choices.clear();
-
-			getItemsToShow(actualMeetingRoom);
-		} else {
-			System.out.println("!!!!!!!!!!!!");
-			System.out.println("There are no rooms in this buiding");
-			System.out.println("!!!!!!!!!!!!");
+			// get the choice as string to parse it to integer later
 		}
 	}
 	/**
 	 * Edit the reservation
 	 */
 	private void editReservation(MeetingRoom room) {
-		// TODO list reservation as choices, after chosen reservation edit all
 		if (!room.getReservations().isEmpty()) {
 			Reservation reservation = getReservation(room);
 			while (true) {
@@ -186,7 +197,6 @@ public class ReservationController {
 	 * Add new reservation
 	 */
 	private void addNewReservation(MeetingRoom actualMeetingRoom) {
-		// TODO enter data one by one, add new reservation object to the actual
 		Reservation reservation = new Reservation();
 
 		reservation.setMeetingRoom(actualMeetingRoom);
@@ -300,7 +310,6 @@ public class ReservationController {
 	 * Delete reservation
 	 */
 	private void deleteReservation(MeetingRoom room) {
-		// TODO list all reservations as choices and let enter item for
 		// deletion, delete it and inform about successful deletion
 		if (!room.getReservations().isEmpty()) {
 			Reservation reservation = getReservation(room);
@@ -313,7 +322,6 @@ public class ReservationController {
 	 * Change date od the reservation
 	 */
 	private void changeDate(MeetingRoom room) {
-		// TODO let them enter new date in format YYYY-MM-DD, change the actual
 		// date, list actual reservations on this date and menu by
 		// getItemsToShow()
 		if (!room.getReservations().isEmpty()) {
@@ -405,7 +413,6 @@ public class ReservationController {
 	 * Show list of sorted reservations by date
 	 */
 	private void listReservationsByDate(Date date) {
-		// list reservations
 		List<Reservation> list = actualMeetingRoom.getSortedReservationsByDate(date);
 		if (list != null && list.size() > 0) {
 			System.out.println("");

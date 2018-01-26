@@ -17,6 +17,12 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
+/**
+ * Addons Controller class.
+ * Contains methods to use CRUD operations for Addons and comunuactes with a database
+ *
+ * @author Tadeas Firich
+ */
 public class AddonsController {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();

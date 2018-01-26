@@ -11,6 +11,12 @@ import cz.unicorncollege.bt.model.MeetingRoom;
 import cz.unicorncollege.bt.utils.Choices;
 import cz.unicorncollege.bt.utils.FileParser;
 
+/**
+ * Meeting Controller class.
+ * Contains methods to use CRUD operations on meeting centres and meeting rooms
+ *
+ * @author Tadeas Firich
+ */
 public class MeetingController {
 	private List<MeetingCentre> meetingCentres;
 
@@ -50,13 +56,19 @@ public class MeetingController {
 		String code;
 
 		while (true) {
-			chosenOption = Choices.showMenu("Choose option (including code after '-', example 1-M01): ", choices);
-			option = chosenOption.contains("-") ? Integer.parseInt(chosenOption.substring(0, 1)) : Integer.parseInt(chosenOption);
-			code = chosenOption.contains("-") ? chosenOption.substring(2, chosenOption.length()) : "";
-			if (isMeetingCentreExist(code) || chosenOption.equals("4")) {
-				break;
-			} else {
-				System.out.println("This option or Meeting Centre is not exist. Try it again");
+			try
+			{
+				chosenOption = Choices.showMenu("Choose option (including code after '-', example 1-M01): ", choices);
+				option = chosenOption.contains("-") ? Integer.parseInt(chosenOption.substring(0, 1)) : Integer.parseInt(chosenOption);
+				code = chosenOption.contains("-") ? chosenOption.substring(2, chosenOption.length()) : "";
+				if (isMeetingCentreExist(code) || chosenOption.equals("4")) {
+					break;
+				} else {
+					System.out.println("This option or Meeting Centre is not exist. Try it again");
+				}
+			} catch (NumberFormatException ex)
+			{
+				System.out.println("Wrong input. Try it again");
 			}
 		}
 
@@ -163,14 +175,18 @@ public class MeetingController {
 			}
 		}
 	}
-
+	/**
+	 * Show meeting rooms in the meeting centre
+	 */
 	public void showMeetingRooms(MeetingCentre centre) {
 		System.out.println("Rooms in: " + centre.getName() + ": ");
 		for (MeetingRoom room : centre.getMeetingRooms()) {
 			System.out.println(room.getName() + ", " + room.getCode() + ", " + room.getDescription());
 		}
 	}
-
+	/**
+	 * Add meeting room to the meeting centre
+	 */
 	public void addMeetingRoom(MeetingCentre centre) {
 		MeetingRoom theRoom = new MeetingRoom();
 
@@ -239,7 +255,11 @@ public class MeetingController {
 		centre.addMeetingRoom(theRoom);
 		System.out.println("The room was successful created");
 	}
-
+	/**
+	 * Get code from meeting centre
+	 *
+	 * @return String code of the meeting centre
+	 */
 	public String getRoomCode(MeetingCentre centre) {
 		System.out.println("Code of MeetingRooms: ");
 		String meetingRoomCode;
@@ -258,7 +278,9 @@ public class MeetingController {
 		}
 		return meetingRoomCode;
 	}
-
+	/**
+	 * Edit meeting room
+	 */
 	public void editRoomDetials(MeetingCentre centre) {
 		String meetingRoomCode = getRoomCode(centre);
 		MeetingRoom theRoom = findRoomByCode(centre, meetingRoomCode);
@@ -347,7 +369,9 @@ public class MeetingController {
 		System.out.println("The Meeting room was successful update: ");
 		System.out.println(theRoom.getCode() +" "+ theRoom.getName() + " " + theRoom.getDescription() + " " + theRoom.getCapacity() + " " + theRoom.isHasVideoConference() + " " + theRoom.getMeetingCentre());
 	}
-
+	/**
+	 * Delete meeting room
+	 */
 	public void deleteRoom(MeetingCentre centre) {
 		String meetingRoomCode = getRoomCode(centre);
 		while (true){
@@ -369,7 +393,11 @@ public class MeetingController {
 			}
 		}
 	}
-
+	/**
+	 * Is this room exist?
+	 *
+	 * @return boolean
+	 */
 	public boolean isRoomExist(MeetingCentre centre, String code) {
 		boolean isFounded = false;
 
@@ -381,7 +409,11 @@ public class MeetingController {
 
 		return isFounded;
 	}
-
+	/**
+	 * Find meeting room in the meeting centre by code
+	 *
+	 * @return MeetingRoom object
+	 */
 	public MeetingRoom findRoomByCode(MeetingCentre centre, String code) {
 		MeetingRoom foundRoom = null;
 		boolean isFounded = false;
@@ -463,7 +495,11 @@ public class MeetingController {
 		System.out.println("The Meeting Centre was successful update: ");
 		System.out.println(centre.getCode() +" "+ centre.getName() + " " + centre.getDescription());
 	}
-
+	/**
+	 * Is this Meeting Centre exist?
+	 *
+	 * @return boolean
+	 */
 	public boolean isMeetingCentreExist(String code) {
 		boolean isFounded = false;
 		for (MeetingCentre centre : meetingCentres) {
@@ -492,7 +528,11 @@ public class MeetingController {
 
 		listAllMeetingCentres();
 	}
-
+	/**
+	 * Find meeting centre by the code
+	 *
+	 * @return MeetingCentre object
+	 */
 	public MeetingCentre findMeetingCentreByCode(String code) {
 		MeetingCentre foundCentre = null;
 		boolean isFounded = false;
@@ -536,11 +576,17 @@ public class MeetingController {
 		}
 		return headerCentres + meetingCenters + headerRooms + meetingRooms;
 	}
-
+	/**
+	 * Get all meeting centres
+	 *
+	 * @return List<MeetingCentre> all meeting centres
+	 */
 	public List<MeetingCentre> getMeetingCentres() {
 		return meetingCentres;
 	}
-
+	/**
+	 * Set meeting centres
+	 */
 	public void setMeetingCentres(List<MeetingCentre> meetingCentres) {
 		this.meetingCentres = meetingCentres;
 	}

@@ -121,12 +121,4 @@ public class MeetingRoom {
 		this.description = description;
 	}
 
-	//TODO: Smazat
-	public boolean hasRoomReservation(MeetingRoom room) {
-		if (room.getReservations().size() > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

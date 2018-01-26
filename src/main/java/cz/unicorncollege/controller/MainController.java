@@ -28,18 +28,13 @@ public class MainController {
 	private MeetingController controll;
 	private ReservationController controllReservation;
 	private AddonsController addOnsController;
-//	private static SessionFactory sessionFactory = buildSessionFactory();
 	private static SessionFactory factory;
 	private static Session session;
 
-//	private static SessionFactory buildSessionFactory() {
-//		final ServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-//		return new MetadataSources(registry).buildMetadata().buildSessionFactory();
-//	}
-
-
-	//TODO: Neošetřený prázdný vstup z menu. Chybí komentáře v kódu.
-
+	/**
+	 * Get instance of opened session
+	 * @return
+	 */
 	public static Session getSession() {
 		if (session != null && session.isOpen()) {
 			return session;
